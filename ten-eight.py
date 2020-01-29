@@ -7,7 +7,7 @@ R = 44100
 V = 32767/2
 DURATION = 16
 
-def write(fname, tempo, upbeats):
+def write(fname, tempo, note_beats, up_beats):
   outf = wave.open(fname, 'w')
   outf.setnchannels(1) # mono
   outf.setsampwidth(2)
@@ -61,13 +61,13 @@ def write(fname, tempo, upbeats):
       writeNoise(start, R/16, V/1024)
 
   writeDownbeats()
-  writeNoteBeats(upbeats)
-  writeUpbeats(upbeats, {
+  writeNoteBeats(note_beats)
+  writeUpbeats(up_beats, {
     2:1,
     3:2,
     4:2,
     5:3,
-  }[upbeats])
+  }[up_beats])
 
   for value in values:
     outf.writeframesraw(struct.pack('<h', value))
@@ -79,7 +79,8 @@ if __name__ == "__main__":
     (R / 2, "120bpm"),
     (2 * R / 3, "90bpm"),
     ]:
-    write('t8-march-%s.wav' % tempo_name, tempo, 2)
-    write('t8-jig-%s.wav' % tempo_name, tempo, 3)
-    write('t8-reel-%s.wav' % tempo_name, tempo, 4)
-    write('t8-teneight-%s.wav' % tempo_name, tempo, 5)
+    write('t8-march-%s.wav' % tempo_name, tempo, 2, 2)
+    write('t8-jig-%s.wav' % tempo_name, tempo, 3, 3)
+    write('t8-reel-%s.wav' % tempo_name, tempo, 4, 4)
+    write('t8-teneight-%s.wav' % tempo_name, tempo, 5, 5)
+    write('t8-teneight-over-jig-%s.wav' % tempo_name, tempo, 3, 5)
